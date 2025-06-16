@@ -1,0 +1,1 @@
+import{o as s}from"./index-ByRL3iEZ.js";const c=()=>s.jsxs("div",{children:[s.jsx("h1",{children:"Страница, не доступна для вас"}),s.jsx("p",{className:"fs-sm mt-2.5",children:"Обратитесь к администраторам сайта"})]});export{c as NotAccessPage};
