@@ -1,18 +1,18 @@
-import { getCookie } from '../utils/cookier.ts';
-import { COOKIES } from '../constants/cookies.ts';
-import { parseApiUrl } from '../utils/parse-api-url.ts';
-import { LINKS } from '../constants/links.ts';
-import { toaster } from '../ui/sonner/sonner.tsx';
+import { getCookie } from "../utils/cookier.ts";
+import { COOKIES } from "../constants/cookies.ts";
+import { parseApiUrl } from "../utils/parse-api-url.ts";
+import { LINKS } from "../constants/links.ts";
+import { toaster } from "../ui/sonner/sonner.tsx";
 
-export interface ApiRequestProps extends Omit<RequestInit, 'body'> {
+export interface ApiRequestProps extends Omit<RequestInit, "body"> {
   url: string;
   data?: unknown;
-  params?: Record<string, any>;
+  params?: Record<string, never>;
   slug?: string;
 }
 
-export const BASE_URL = import.meta.env.VITE_API_URL;
-export const API_TOKEN = import.meta.env.VITE_PUBLIC_API_TOKEN;
+export const BASE_URL = "https://reqres.in/api";
+export const API_TOKEN = "reqres-free-v1";
 
 export const apiRequest = async ({
   url,
@@ -37,8 +37,8 @@ export const apiRequest = async ({
         ...(authToken && {
           Authorization: `Bearer ${authToken}`,
         }),
-        ...(API_TOKEN && { 'X-API-KEY': API_TOKEN }),
-        ...(!isFormData && { 'Content-Type': 'application/json' }),
+        ...(API_TOKEN && { "X-API-KEY": API_TOKEN }),
+        ...(!isFormData && { "Content-Type": "application/json" }),
         ...headers,
       },
       ...((data && { body }) as Record<string, unknown>),
@@ -60,24 +60,22 @@ export const apiRequest = async ({
     }
 
     if (import.meta.env.DEV && !response.ok && response.status !== 406) {
-      const errorText = resJson.data ? String(resJson.data) : '';
+      const errorText = resJson.data ? String(resJson.data) : "";
       const errorMessage = `Ошибка HTTP: ${response.status} ${errorText}`;
 
-      toaster(errorMessage + '::' + errorText, 'error', { duration: 6000 });
+      toaster(errorMessage + "::" + errorText, "error", { duration: 6000 });
     }
 
     if (!response.ok && response.status !== 405) {
-      const errorText = resJson.data ? String(resJson.data) : '';
+      const errorText = resJson.data ? String(resJson.data) : "";
       const errorMessage = `Ошибка HTTP: ${response.status} ${errorText}`;
 
-      toaster(errorMessage + '::' + errorText, 'error', { duration: 6000 });
+      toaster(errorMessage + "::" + errorText, "error", { duration: 6000 });
     }
 
     return resJson;
   } catch (error) {
-    // eslint-disable-next-line no-console
-
-    toaster('Произошла ошибка запроса к API сервера', 'error', {
+    toaster("Произошла ошибка запроса к API сервера", "error", {
       duration: 6000,
     });
   }
