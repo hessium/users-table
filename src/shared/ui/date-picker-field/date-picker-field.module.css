@@ -1,0 +1,131 @@
+.dropdownCalendar {
+    min-width: 360px;
+    border: 1px solid  rgba(0, 0, 0, 0.09);
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: white;
+    z-index: 20;
+    border-radius: 16px;
+    padding: 10px 14px;
+    box-shadow: 0px 10px 15px 0px rgba(66, 71, 77, 0.1);
+}
+
+:global(.rdp-month_caption) {
+    margin-bottom: 20px;
+}
+
+:global(.rdp-caption_label) {
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+:global(.rdp-dropdown_root:first-child .rdp-caption_label:after) {
+    content: ',';
+    color: var(--color-secondary);
+    margin-right: 3px;
+    display: inline-block;
+}
+
+:global(.rdp-dropdown_root:nth-child(2) .rdp-caption_label) {
+    color: var(--color-secondary);
+}
+
+
+:global(.rdp-dropdown_root) {
+    display: flex;
+    align-items: center;
+}
+
+:global(.rdp-dropdowns) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+:global(.rdp-dropdown) {
+    display: none;
+}
+
+:global(.rdp-root) {
+    position: relative;
+}
+
+:global(.rdp-chevron) {
+    display: none;
+}
+
+:global(.rdp-nav) {
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+
+:global(.rdp-nav .rdp-chevron) {
+    display: block;
+    fill: rgba(166, 172, 179, 1);
+}
+
+
+:global(.rdp-nav svg) {
+    width: 14px;
+    height: 24px;
+}
+
+:global(.rdp-nav  button) {
+    position: absolute;
+    top: 0;
+    z-index: 10;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+:global(.rdp-button_previous) {
+    left: 0;
+}
+
+:global(.rdp-button_next) {
+    right: 0;
+}
+
+:global(.rdp-month_grid) {
+    width: 100%;
+}
+
+:global(.rdp-weekday) {
+    color: var(--color-secondary);
+    padding: 10px 0;
+}
+
+:global(.rdp-hidden) {
+    color: rgba(166, 172, 179, 1);
+}
+
+:global(.rdp-day_button) {
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+    width: 34px;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 600;
+    margin: 0 auto;
+    display: block;
+}
+
+:global(.rdp-selected .rdp-day_button) {
+    border-radius: 50%;
+    background-color: rgba(92, 204, 129, 1);
+    color: white;
+}
