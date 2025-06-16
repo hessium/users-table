@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { Spinner } from "../spinner/spinner";
-import type { User } from "../../types/globals.ts";
-import { useHomePage } from "../../../components/home/use-home-page";
-import { cn } from "../../utils/cn";
+import { useHomePage } from "../home/use-home-page.ts";
+import { Spinner } from "../../shared/ui/spinner/spinner.tsx";
+import type { User } from "../../shared/types/globals.ts";
+import { cn } from "../../shared/utils/cn.ts";
 
 interface UserSelectProps {
   value?: number | null;
@@ -23,6 +23,7 @@ export const UserSelect = ({
   const [search, setSearch] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const {
     allUsers,
@@ -84,11 +85,28 @@ export const UserSelect = ({
     }
   };
 
+  const handleUserSelect = (user: User) => {
+    if (!disabledIds.includes(user.id)) {
+      onChange(user.id);
+      setOpen(false);
+      setSearch("");
+      inputRef.current?.blur();
+    }
+  };
+
+  const handleInputClick = () => {
+    setOpen(true);
+    inputRef.current?.focus();
+  };
+
+  const selectedUser = value ? allUsers.find((u) => u.id === value) : null;
+
   return (
     <div className="flex flex-col gap-2 relative" ref={containerRef}>
       <label className="text-sm font-medium text-primary">{label}</label>
-      <div className="relative" tabIndex={0}>
+      <div className="relative">
         <input
+          ref={inputRef}
           type="text"
           className={cn(
             "py-[17px] px-7 text-[16px] leading-none font-light border-gray-200 border-1 rounded-md w-full",
@@ -99,13 +117,13 @@ export const UserSelect = ({
           value={
             open || !value
               ? search
-              : (() => {
-                  const user = allUsers.find((u) => u.id === value);
-                  return user ? `${user.last_name} ${user.first_name}` : "";
-                })()
+              : selectedUser
+                ? `${selectedUser.last_name} ${selectedUser.first_name}`
+                : ""
           }
           disabled={isLoading}
           onChange={handleInputChange}
+          onClick={handleInputClick}
           placeholder="Выберите пользователя"
           onFocus={() => setOpen(true)}
         />
@@ -121,8 +139,8 @@ export const UserSelect = ({
             )}
           >
             {isLoading && <Spinner />}
-            {filteredUsers.map((user) => {
-              const disabled = disabledIds.includes(user.id);
+            {filteredUsers.map((user: User) => {
+              const isDisabled = disabledIds.includes(user.id);
               return (
                 <button
                   key={user.id}
@@ -130,17 +148,11 @@ export const UserSelect = ({
                   className={cn(
                     "w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2",
                     "transition-colors duration-200",
-                    disabled && "opacity-50 cursor-not-allowed",
-                    !disabled && "hover:bg-primary/5",
+                    isDisabled && "opacity-50 cursor-not-allowed",
+                    !isDisabled && "hover:bg-primary/5",
                   )}
-                  onClick={() => {
-                    if (!disabled) {
-                      onChange(user.id);
-                      setOpen(false);
-                      setSearch("");
-                    }
-                  }}
-                  disabled={disabled}
+                  onClick={() => handleUserSelect(user)}
+                  disabled={isDisabled}
                 >
                   {user.last_name} {user.first_name}
                 </button>

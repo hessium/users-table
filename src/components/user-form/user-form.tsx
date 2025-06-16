@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { Button } from '../../shared/ui/button/button';
-import { DatePickerField } from '../../shared/ui/date-picker-field/date-picker-field';
-import { UserSelect } from '../../shared/ui/user-select/user-select';
-import type { User } from '../../shared/types/globals';
-import { Modal } from '../../shared/ui/modal/modal';
-import { UserCreateForm } from './user-create-form';
-import { userApi } from '../../shared/api/user-api';
-import { useQueryClient } from '@tanstack/react-query';
-import { toaster } from '../../shared/ui/sonner/sonner';
+import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { Button } from "../../shared/ui/button/button";
+import { DatePickerField } from "../../shared/ui/date-picker-field/date-picker-field";
+import { UserSelect } from "../user-select/user-select";
+import type { User } from "../../shared/types/globals";
+import { Modal } from "../../shared/ui/modal/modal";
+import { UserCreateForm } from "./user-create-form";
+import { userApi } from "../../shared/api/user-api";
+import { useQueryClient } from "@tanstack/react-query";
+import { toaster } from "../../shared/ui/sonner/sonner";
 
 interface UserFormFields extends Partial<User> {
-  gender?: 'male' | 'female';
-  role?: 'doctor' | 'nurse' | 'admin';
+  gender?: "male" | "female";
+  role?: "doctor" | "nurse" | "admin";
 }
 
 interface UserFormProps {
@@ -20,7 +20,7 @@ interface UserFormProps {
   onSubmit: (data: UserFormFields) => void;
   onCancel: () => void;
   addedUserIds?: number[];
-  mode?: 'create' | 'edit';
+  mode?: "create" | "edit";
 }
 
 export const UserForm = ({
@@ -28,11 +28,11 @@ export const UserForm = ({
   onSubmit,
   onCancel,
   addedUserIds = [],
-  mode = 'create',
+  mode = "create",
 }: UserFormProps) => {
   const methods = useForm<UserFormFields>({
     defaultValues: initialValues,
-    mode: 'onBlur',
+    mode: "onBlur",
   });
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,7 +40,7 @@ export const UserForm = ({
   const queryClient = useQueryClient();
 
   const handleUserChange = (userId: number | null) => {
-    methods.setValue('id', userId ?? undefined);
+    methods.setValue("id", userId ?? undefined);
   };
 
   const handleAddUser = () => {
@@ -52,14 +52,14 @@ export const UserForm = ({
       setIsCreatingUser(true);
       const created = await userApi.create(data);
 
-      await queryClient.invalidateQueries({ queryKey: ['users'] });
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
 
-      methods.setValue('id', Number(created.data.id));
+      methods.setValue("id", Number(created.data.id));
       setShowAddUserModal(false);
-      toaster('Пользователь успешно создан', 'success');
+      toaster("Пользователь успешно создан", "success");
       onCancel();
     } catch (e) {
-      toaster('Ошибка при создании пользователя', 'error');
+      toaster("Ошибка при создании пользователя", "error");
     } finally {
       setIsCreatingUser(false);
     }
@@ -71,11 +71,13 @@ export const UserForm = ({
         setIsSubmitting(true);
         await onSubmit(data);
         toaster(
-          mode === 'edit' ? 'Пользователь успешно обновлен' : 'Пользователь успешно добавлен',
-          'success'
+          mode === "edit"
+            ? "Пользователь успешно обновлен"
+            : "Пользователь успешно добавлен",
+          "success",
         );
       } catch (error) {
-        toaster('Произошла ошибка при сохранении', 'error');
+        toaster("Произошла ошибка при сохранении", "error");
       } finally {
         setIsSubmitting(false);
       }
@@ -95,7 +97,7 @@ export const UserForm = ({
     <FormProvider {...methods}>
       <form onSubmit={handleFormSubmit} className="flex flex-col gap-4">
         <UserSelect
-          value={methods.watch('id') as number}
+          value={methods.watch("id") as number}
           onChange={handleUserChange}
           disabledIds={addedUserIds}
           onAddUser={handleAddUser}
@@ -111,7 +113,7 @@ export const UserForm = ({
             </label>
             <select
               id="gender"
-              {...methods.register('gender', { required: 'Выберите пол' })}
+              {...methods.register("gender", { required: "Выберите пол" })}
               className="py-[17px] px-7 text-[16px] leading-none font-light border-gray-200 border-1 rounded-md w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               defaultValue=""
             >
@@ -140,7 +142,7 @@ export const UserForm = ({
         <div>
           <h3 className="text-2xl font-medium mb-4">Роль</h3>
           <select
-            {...methods.register('role', { required: 'Выберите роль' })}
+            {...methods.register("role", { required: "Выберите роль" })}
             className="py-[17px] px-7 text-[16px] leading-none font-light border-gray-200 border-1 rounded-md w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             defaultValue=""
           >
@@ -149,11 +151,11 @@ export const UserForm = ({
             </option>
             <option value="doctor">Доктор</option>
             <option value="nurse">
-              {methods.watch('gender') === 'male'
-                ? 'Медбрат'
-                : methods.watch('gender') === 'female'
-                  ? 'Медсестра'
-                  : 'Медсестра/Медбрат'}
+              {methods.watch("gender") === "male"
+                ? "Медбрат"
+                : methods.watch("gender") === "female"
+                  ? "Медсестра"
+                  : "Медсестра/Медбрат"}
             </option>
             <option value="admin">Админ</option>
           </select>
@@ -165,12 +167,12 @@ export const UserForm = ({
         </div>
 
         <div className="flex gap-2 justify-center mt-4">
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             className="min-w-[180px] h-[56px]"
             isLoading={isSubmitting}
           >
-            {mode === 'edit' ? 'Сохранить' : 'Добавить'}
+            {mode === "edit" ? "Сохранить" : "Добавить"}
           </Button>
           <Button
             type="button"

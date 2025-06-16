@@ -2,16 +2,16 @@ import { useHomePage } from "./use-home-page.ts";
 import { Spinner } from "../../shared/ui/spinner/spinner.tsx";
 import type { User } from "../../shared/types/globals.ts";
 import { columns } from "../../shared/constants/users-table.ts";
-import { Table } from "../../shared/ui/table/table.tsx";
+import { Table } from "../../shared/ui/table/table";
 import { useInView } from "react-intersection-observer";
-import { Modal } from "../../shared/ui/modal/modal.tsx";
-import { EditUserForm } from "../edit-user/edit-user-form.tsx";
+import { Modal } from "../../shared/ui/modal/modal";
+import { EditUserForm } from "../../components/edit-user/edit-user-form";
 import { useEffect, useState } from "react";
-import { UserForm } from "../user-form/user-form.tsx";
+import { UserForm } from "../../components/user-form/user-form";
 import { useQueryClient } from "@tanstack/react-query";
-import { userApi } from "../../shared/api/user-api.ts";
-import { Button } from "../../shared/ui/button/button.tsx";
-import { toaster } from "../../shared/ui/sonner/sonner.tsx";
+import { userApi } from "../../shared/api/user-api";
+import { Button } from "../../shared/ui/button/button";
+import { toaster } from "../../shared/ui/sonner/sonner";
 
 export const HomePage = () => {
   const {
@@ -103,7 +103,7 @@ export const HomePage = () => {
         <UserForm
           onSubmit={handleCreateUser}
           onCancel={() => setShowCreateModal(false)}
-          addedUserIds={allUsers.map((u) => u.id)}
+          addedUserIds={[]}
           mode="create"
         />
       </Modal>

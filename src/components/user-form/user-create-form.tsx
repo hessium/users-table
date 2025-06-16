@@ -1,15 +1,15 @@
-import { useForm, FormProvider } from 'react-hook-form';
-import { Input } from '../../shared/ui/input/input';
-import { Button } from '../../shared/ui/button/button';
-import { vld } from '../../shared/utils/form-validator';
-import { DatePickerField } from '../../shared/ui/date-picker-field/date-picker-field';
+import { useForm, FormProvider } from "react-hook-form";
+import { Input } from "../../shared/ui/input/input";
+import { Button } from "../../shared/ui/button/button";
+import { vld } from "../../shared/utils/form-validator";
+import { DatePickerField } from "../../shared/ui/date-picker-field/date-picker-field";
 
 interface UserCreateFormFields {
   first_name: string;
   last_name: string;
   email: string;
-  gender: 'male' | 'female';
-  role: 'doctor' | 'nurse' | 'admin';
+  gender: "male" | "female";
+  role: "doctor" | "nurse" | "admin";
   birth_date: Date;
 }
 
@@ -25,7 +25,7 @@ export const UserCreateForm = ({
   isLoading = false,
 }: UserCreateFormProps) => {
   const methods = useForm<UserCreateFormFields>({
-    mode: 'onBlur',
+    mode: "onBlur",
   });
 
   const handleFormSubmit = methods.handleSubmit(
@@ -52,7 +52,7 @@ export const UserCreateForm = ({
         <Input
           name="first_name"
           label="Имя"
-          rules={vld().required('Имя').build()}
+          rules={vld().required("Имя").build()}
         />
 
         <div className="flex gap-2">
@@ -65,7 +65,7 @@ export const UserCreateForm = ({
             </label>
             <select
               id="gender"
-              {...methods.register('gender', { required: 'Выберите пол' })}
+              {...methods.register("gender", { required: "Выберите пол" })}
               className="py-[17px] px-7 text-[16px] leading-none font-light border-gray-200 border-1 rounded-md w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               defaultValue=""
             >
@@ -92,7 +92,7 @@ export const UserCreateForm = ({
         <div>
           <h3 className="text-2xl font-medium mb-4">Роль</h3>
           <select
-            {...methods.register('role', { required: 'Выберите роль' })}
+            {...methods.register("role", { required: "Выберите роль" })}
             className="py-[17px] px-7 text-[16px] leading-none font-light border-gray-200 border-1 rounded-md w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             defaultValue=""
           >
@@ -101,11 +101,11 @@ export const UserCreateForm = ({
             </option>
             <option value="doctor">Доктор</option>
             <option value="nurse">
-              {methods.watch('gender') === 'male'
-                ? 'Медбрат'
-                : methods.watch('gender') === 'female'
-                  ? 'Медсестра'
-                  : 'Медсестра/Медбрат'}
+              {methods.watch("gender") === "male"
+                ? "Медбрат"
+                : methods.watch("gender") === "female"
+                  ? "Медсестра"
+                  : "Медсестра/Медбрат"}
             </option>
             <option value="admin">Админ</option>
           </select>
