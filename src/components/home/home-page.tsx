@@ -1,17 +1,17 @@
-import { useHomePage } from './use-home-page.ts';
-import { Spinner } from '../../shared/ui/spinner/spinner.tsx';
-import type { User } from '../../shared/types/globals.ts';
-import { columns } from '../../shared/constants/users-table.ts';
-import { Table } from '../../shared/ui/table/table';
-import { useInView } from 'react-intersection-observer';
-import { Modal } from '../../shared/ui/modal/modal';
-import { EditUserForm } from '../../components/edit-user/edit-user-form';
-import { useEffect, useState } from 'react';
-import { UserForm } from '../../components/user-form/user-form';
-import { useQueryClient } from '@tanstack/react-query';
-import { userApi } from '../../shared/api/user-api';
-import { Button } from '../../shared/ui/button/button';
-import { toaster } from '../../shared/ui/sonner/sonner';
+import { useHomePage } from "./use-home-page.ts";
+import { Spinner } from "../../shared/ui/spinner/spinner.tsx";
+import type { User } from "../../shared/types/globals.ts";
+import { columns } from "../../shared/constants/users-table.ts";
+import { Table } from "../../shared/ui/table/table.tsx";
+import { useInView } from "react-intersection-observer";
+import { Modal } from "../../shared/ui/modal/modal.tsx";
+import { EditUserForm } from "../edit-user/edit-user-form.tsx";
+import { useEffect, useState } from "react";
+import { UserForm } from "../user-form/user-form.tsx";
+import { useQueryClient } from "@tanstack/react-query";
+import { userApi } from "../../shared/api/user-api.ts";
+import { Button } from "../../shared/ui/button/button.tsx";
+import { toaster } from "../../shared/ui/sonner/sonner.tsx";
 
 export const HomePage = () => {
   const {
@@ -42,29 +42,29 @@ export const HomePage = () => {
   const handleCreateUser = async (data: any) => {
     try {
       await userApi.create(data);
-      await queryClient.invalidateQueries({ queryKey: ['users'] });
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
       setShowCreateModal(false);
-      toaster('Пользователь успешно создан', 'success');
+      toaster("Пользователь успешно создан", "success");
     } catch (e) {
-      toaster('Ошибка при создании пользователя', 'error');
+      toaster("Ошибка при создании пользователя", "error");
     }
   };
 
   const handleEditSubmitWithToast = async (data: Partial<User>) => {
     try {
       await handleEditSubmit(data);
-      toaster('Пользователь успешно обновлён', 'success');
+      toaster("Пользователь успешно обновлён", "success");
     } catch (e) {
-      toaster('Ошибка при обновлении пользователя', 'error');
+      toaster("Ошибка при обновлении пользователя", "error");
     }
   };
 
   const handleDeleteConfirmWithToast = async () => {
     try {
       await handleDeleteConfirm();
-      toaster('Пользователь успешно удалён', 'success');
+      toaster("Пользователь успешно удалён", "success");
     } catch (e) {
-      toaster('Ошибка при удалении пользователя', 'error');
+      toaster("Ошибка при удалении пользователя", "error");
     }
   };
 
@@ -135,7 +135,7 @@ export const HomePage = () => {
         showConfirmLoader={isDeleting}
       >
         <p className="text-lg">
-          Вы уверены, что хотите удалить пользователя {deletingUser?.first_name}{' '}
+          Вы уверены, что хотите удалить пользователя {deletingUser?.first_name}{" "}
           {deletingUser?.last_name}?
         </p>
       </Modal>

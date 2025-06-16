@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
-import { Spinner } from '../spinner/spinner';
-import type { User } from '../../types/globals.ts';
-import { useHomePage } from '../../../pages/home/use-home-page';
-import { cn } from '../../utils/cn';
+import { useEffect, useRef, useState } from "react";
+import { Spinner } from "../spinner/spinner";
+import type { User } from "../../types/globals.ts";
+import { useHomePage } from "../../../components/home/use-home-page";
+import { cn } from "../../utils/cn";
 
 interface UserSelectProps {
   value?: number | null;
@@ -17,29 +17,36 @@ export const UserSelect = ({
   onChange,
   disabledIds = [],
   onAddUser,
-  label = 'Пользователь',
+  label = "Пользователь",
 }: UserSelectProps) => {
   const [open, setOpen] = useState(false);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
-  const { allUsers, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useHomePage();
+  const {
+    allUsers,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useHomePage();
 
   const filteredUsers = search
     ? allUsers
         .filter((u): u is User => u !== undefined && u !== null)
-        .filter((u) => 
-          u.first_name.toLowerCase().includes(search.toLowerCase()) ||
-          u.last_name.toLowerCase().includes(search.toLowerCase())
+        .filter(
+          (u) =>
+            u.first_name.toLowerCase().includes(search.toLowerCase()) ||
+            u.last_name.toLowerCase().includes(search.toLowerCase()),
         )
     : allUsers.filter((u): u is User => u !== undefined && u !== null);
 
   const hasExactMatch = search
     ? filteredUsers.some(
-        (u) => 
+        (u) =>
           u.first_name.toLowerCase() === search.toLowerCase() ||
-          u.last_name.toLowerCase() === search.toLowerCase()
+          u.last_name.toLowerCase() === search.toLowerCase(),
       )
     : false;
 
@@ -52,8 +59,8 @@ export const UserSelect = ({
         setOpen(false);
       }
     };
-    if (open) document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
+    if (open) document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
   }, [open]);
 
   useEffect(() => {
@@ -65,8 +72,8 @@ export const UserSelect = ({
       }
     };
     const el = listRef.current;
-    el?.addEventListener('scroll', handleScroll);
-    return () => el?.removeEventListener('scroll', handleScroll);
+    el?.addEventListener("scroll", handleScroll);
+    return () => el?.removeEventListener("scroll", handleScroll);
   }, [open, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,14 +94,14 @@ export const UserSelect = ({
             "py-[17px] px-7 text-[16px] leading-none font-light border-gray-200 border-1 rounded-md w-full",
             "focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent",
             "cursor-pointer hover:border-primary transition-colors",
-            isLoading && "opacity-50 cursor-not-allowed"
+            isLoading && "opacity-50 cursor-not-allowed",
           )}
           value={
             open || !value
               ? search
               : (() => {
                   const user = allUsers.find((u) => u.id === value);
-                  return user ? `${user.last_name} ${user.first_name}` : '';
+                  return user ? `${user.last_name} ${user.first_name}` : "";
                 })()
           }
           disabled={isLoading}
@@ -110,7 +117,7 @@ export const UserSelect = ({
             ref={listRef}
             className={cn(
               "absolute z-20 bg-white rounded-2xl shadow-modal mt-2 w-full max-h-72 overflow-y-auto",
-              "border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+              "border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary",
             )}
           >
             {isLoading && <Spinner />}
@@ -124,13 +131,13 @@ export const UserSelect = ({
                     "w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2",
                     "transition-colors duration-200",
                     disabled && "opacity-50 cursor-not-allowed",
-                    !disabled && "hover:bg-primary/5"
+                    !disabled && "hover:bg-primary/5",
                   )}
                   onClick={() => {
                     if (!disabled) {
                       onChange(user.id);
                       setOpen(false);
-                      setSearch('');
+                      setSearch("");
                     }
                   }}
                   disabled={disabled}
@@ -144,11 +151,11 @@ export const UserSelect = ({
                 type="button"
                 className={cn(
                   "w-full text-left px-4 py-2 text-green-600",
-                  "hover:bg-green-50 transition-colors duration-200"
+                  "hover:bg-green-50 transition-colors duration-200",
                 )}
                 onClick={() => {
                   setOpen(false);
-                  setSearch('');
+                  setSearch("");
                   onAddUser?.();
                 }}
               >
